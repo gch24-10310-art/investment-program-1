@@ -354,11 +354,13 @@ document.getElementById('btnReset').addEventListener('click', ()=>{
   updateBalance();
 });
 
-// prefill if this investor already submitted before
+// ---------- 기기별 중복 제출 방지 ----------
+const LOCK_KEY = 'gef_locked_name';
 const nameInput = document.getElementById('investorName');
-nameInput.addEventListener('change', async ()=>{
-  const name = nameInput.value.trim();
-  if(!name) return;
+const deviceLockBanner = document.getElementById('deviceLockBanner');
+const lockedNameLabel = document.getElementById('lockedNameLabel');
+
+async function loadExistingInvestment(name){
   try{
     const doc = await db.collection('investments').doc(encodeName(name)).get();
     if(doc.exists){
@@ -376,7 +378,47 @@ nameInput.addEventListener('change', async ()=>{
   }catch(e){
     console.error(e);
   }
+}
+
+function applyDeviceLock(name){
+  nameInput.value = name;
+  nameInput.disabled = true;
+  lockedNameLabel.textContent = name;
+  deviceLockBanner.style.display = 'block';
+}
+
+function clearDeviceLock(){
+  localStorage.removeItem(LOCK_KEY);
+  nameInput.disabled = false;
+  nameInput.value = '';
+  deviceLockBanner.style.display = 'none';
+  TEAMS.forEach(t=>{
+    allocations[t.id]=0;
+    const inp = ledgerEl.querySelector(`.amount-input[data-team="${t.id}"]`);
+    if(inp) inp.value = 0;
+  });
+  updateBalance();
+  document.getElementById('investMsg').textContent = '';
+}
+
+document.getElementById('btnHandoff').addEventListener('click', ()=>{
+  if(confirm('이 기기의 제출 잠금을 해제하고 다음 참가자가 새로 투자할 수 있게 합니다. 계속할까요?')){
+    clearDeviceLock();
+  }
 });
+
+nameInput.addEventListener('change', async ()=>{
+  const name = nameInput.value.trim();
+  if(!name) return;
+  await loadExistingInvestment(name);
+});
+
+// 이 기기에서 이미 제출한 기록이 있다면 이름을 잠그고 불러오기
+const existingLock = localStorage.getItem(LOCK_KEY);
+if(existingLock){
+  applyDeviceLock(existingLock);
+  loadExistingInvestment(existingLock);
+}
 
 document.getElementById('btnSubmit').addEventListener('click', async ()=>{
   const msg = document.getElementById('investMsg');
