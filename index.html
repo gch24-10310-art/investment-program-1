@@ -438,10 +438,11 @@ document.getElementById('btnSubmit').addEventListener('click', async ()=>{
   btn.disabled = true;
   btn.textContent = '제출 중...';
   try{
-    const payload = { name, allocations: {...allocations}, total: spent, timestamp: Date.now() };
-    await db.collection('investments').doc(encodeName(name)).set(payload);
-    msg.textContent = '투자가 접수되었습니다. 감사합니다!';
+await db.collection('investments').doc(encodeName(name)).set(payload);
+    msg.textContent = '투자가 접수되었습니다. 감사합니다! 이 기기는 이제 이 이름으로 잠깁니다.';
     msg.classList.remove('error');
+    localStorage.setItem(LOCK_KEY, name);
+    applyDeviceLock(name);
   }catch(e){
     msg.textContent = '오류가 발생했습니다: ' + e.message;
     msg.classList.add('error');
