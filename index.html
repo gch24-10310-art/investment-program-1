@@ -138,9 +138,14 @@
       <div class="balance-stamp" id="balanceStamp">배분 대기중</div>
     </div>
 
-    <div class="field">
+<div class="field">
       <label for="investorName">투자자 이름</label>
       <input type="text" id="investorName" placeholder="이름을 입력하세요 (중복 제출 시 이전 투자가 수정됩니다)" />
+    </div>
+
+    <div id="deviceLockBanner" style="display:none; background:#FBF2E4; border:1px solid var(--gold); color:#6B5117; padding:12px 16px; border-radius:4px; font-size:13px; margin-top:12px;">
+      이 기기에서는 <b id="lockedNameLabel"></b>님으로 제출이 잠겨 있습니다. 배분은 수정할 수 있지만 다른 이름으로 새로 제출할 수는 없습니다.
+      <button id="btnHandoff" type="button" style="margin-top:8px;display:block;width:100%;padding:8px;border:1px solid var(--gold);background:transparent;color:#6B5117;border-radius:3px;cursor:pointer;">다음 참가자에게 전달하기 (이 기기 잠금 해제)</button>
     </div>
 
     <div class="ledger" id="ledger"></div>
