@@ -197,16 +197,25 @@
    1) 아래 firebaseConfig 를 본인의 Firebase 프로젝트 설정으로 교체하세요.
       Firebase 콘솔 > 프로젝트 설정 > 일반 > "내 앱" 섹션에서 복사할 수 있습니다.
    ========================================================================= */
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA22tl26wg28-QyVW3OORpej9pXAq-5XiQ",
+  authDomain: "mock-investment1.firebaseapp.com",
+  projectId: "mock-investment1",
+  storageBucket: "mock-investment1.firebasestorage.app",
+  messagingSenderId: "950052821412",
+  appId: "1:950052821412:web:34315bc23f8bd5ec728931",
+  measurementId: "G-TBQ9Q4ZQ6Y"
 };
 
-const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+  const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
 if(!isConfigured){
   document.getElementById('configWarning').style.display = 'block';
 }
